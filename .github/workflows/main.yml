@@ -13,17 +13,17 @@ jobs:
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build Docker Image
-        run: docker build -t jednodetest/jed-node-imagedec2023 .
+        run: docker build -t jedogwumike/jed-node-imagedec2023 .
       - name: Publish image to Docker Hub
-        run: docker push jednodetest/jed-node-imagedec2023:latest
+        run: docker push jedogwumike/jed-node-imagedec2023:latest
 
   deploy:
     needs: build
     runs-on: [aws-ec2]
     steps:
       - name: Pull image from Docker Hub
-        run: docker pull jednodetest/jed-node-imagedec2023:latest
+        run: docker pull jedogwumike/jed-node-imagedec2023:latest
       - name: Delete old container
         run: docker rm -f jed-node-imagedec2023-container
       - name: Run docker container
-        run: docker run -d -p 5000:5000 jed-node-imagedec2023-container jednodetest/jed-node-imagedec2023
+        run: docker run -d -p 5000:5000 --name jed-node-imagedec2023-container jedogwumike/jed-node-imagedec2023
